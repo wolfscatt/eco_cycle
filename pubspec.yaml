@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0
   provider: ^6.1.1
+  flutter_native_splash: ^2.3.10
 
 dev_dependencies:
   flutter_test:
@@ -24,5 +25,22 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/Ecocycle.png
+    - assets/icons/
+    - assets/fonts/
+
+flutter_native_splash:
+  color: "#00202b"
+  color_dark: "#00202b"
+  image: "assets/images/Ecocycle.png"
+  image_dark: "assets/images/Ecocycle.png"
+
+  android_12:
+    image: "assets/images/Ecocycle.png"
+    icon_background_color: "#00202b"
+    image_dark: "assets/images/Ecocycle.png"
+    icon_background_color_dark: "#00202b"
