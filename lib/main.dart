@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:eco_cycle/src/utils/theme/theme.dart';
 
 void main() {
-  runApp(Deneme());
+  runApp(App());
 }
 
-class Deneme extends StatelessWidget {
-  final String title = "Demo App";
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,21 +18,3 @@ class Deneme extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  final String title;
-  MyHomePage(this.title, {Key? key}) : super(key: key);
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(widget.title),
-      ),
-    );
-  }
-}

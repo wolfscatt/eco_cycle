@@ -1,20 +1,33 @@
+import 'package:eco_cycle/src/utils/theme/text_form_field_theme.dart';
 import 'package:eco_cycle/src/utils/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
+
+  // Light Theme
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     textTheme: AppTextTheme.lightTextTheme,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ButtonStyle(
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+        backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
+      ),
+    ),
     colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange),
+    inputDecorationTheme: AppTextFormFieldTheme.lightInputDecorationTheme,
   );
 
+
+  // Dark Theme
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     textTheme: AppTextTheme.darkTextTheme,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10))),
+        shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
         backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
       ),
     ),
@@ -31,5 +44,6 @@ class AppTheme {
       800: Color(0xFF29379D),
       900: Color(0xFF1A237E),
     })),
+    inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme,
   );
 }

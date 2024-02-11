@@ -13,6 +13,18 @@ class AppTextTheme{
       fontWeight: FontWeight.bold,
       color: Colors.white,
     ),
+    headlineMedium: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    bodyLarge: TextStyle(
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+    ),
+    bodyMedium: TextStyle(
+      fontWeight: FontWeight.normal,
+      color: Colors.white,
+    ),
   );
   
 }
