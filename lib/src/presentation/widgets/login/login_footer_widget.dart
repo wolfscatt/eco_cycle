@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../utils/constants.dart';
+import '../../screens/register_screen.dart';
 
 class LoginFooterWidget extends StatelessWidget {
   const LoginFooterWidget({
@@ -25,7 +27,11 @@ class LoginFooterWidget extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            // Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (context) => RegisterScreen()));
+            Get.to(() => RegisterScreen());
+          },
           child: Text.rich(
             TextSpan(
                 text: "Don't Have An Account",

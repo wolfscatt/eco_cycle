@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'forget_password_btn_widget.dart';
 import 'forget_password_mail.dart';
@@ -35,15 +36,8 @@ class ForgetPasswordScreen {
               title: "Email",
               subtitle: "Reset your password via email",
               onTap: () {
-                Navigator.pop(
-                  context,
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForgetPasswordMailScreen(),
-                  ),
-                );
+                Get.off(() => ForgetPasswordMailScreen() ) ;
+
               },
             ),
             SizedBox(
@@ -55,15 +49,7 @@ class ForgetPasswordScreen {
               title: "Phone",
               subtitle: "Reset your password via phone",
               onTap: () {
-                Navigator.pop(
-                  context,
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ForgetPasswordPhoneScreen(),
-                  ),
-                );
+                 Get.off(() => ForgetPasswordPhoneScreen() ) ;
               },
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/constants.dart';
-import 'otp_screen.dart';
+import '../../screens/otp_screen.dart';
 
 class ForgetPasswordPhoneScreen extends StatelessWidget {
   const ForgetPasswordPhoneScreen({super.key});

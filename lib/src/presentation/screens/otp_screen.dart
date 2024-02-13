@@ -1,11 +1,15 @@
+import 'package:eco_cycle/src/domain/repositories/otp_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:get/get.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final otpController = Get.put(OTPController());
+    var otp = otpController.otp.value;
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(30),
@@ -43,7 +47,8 @@ class OtpScreen extends StatelessWidget {
                 fillColor: Colors.black.withOpacity(0.1),
                 filled: true,
                 onSubmit: (code) {
-                  print("Code is : $code");
+                  otp = code;
+                  OTPController.to.verifyOTP(otp);
                 },
               ),
               SizedBox(
@@ -51,7 +56,7 @@ class OtpScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  print("Code Verified");
+                  OTPController.to.verifyOTP(otp);
                 },
                 child: Text("Send"),
               ),

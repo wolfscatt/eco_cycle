@@ -18,6 +18,11 @@ dependencies:
   provider: ^6.1.1
   flutter_native_splash: ^2.3.10
   flutter_otp_text_field: ^1.1.0+2
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.4
+  get: ^4.6.6
+  line_awesome_flutter: ^2.0.0
+  cloud_firestore: ^4.15.4
 
 dev_dependencies:
   flutter_test:

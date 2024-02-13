@@ -1,4 +1,4 @@
-import 'package:eco_cycle/src/presentation/widgets/forget_password/otp_screen.dart';
+import 'package:eco_cycle/src/presentation/screens/otp_screen.dart';
 import 'package:eco_cycle/src/utils/constants.dart';
 import 'package:flutter/material.dart';
 

@@ -2,6 +2,7 @@ import 'package:eco_cycle/src/presentation/screens/login_screen.dart';
 import 'package:eco_cycle/src/presentation/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_cycle/src/utils/constants.dart';
+import 'package:get/get.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -27,8 +28,9 @@ class WelcomeScreen extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           print("Login");
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => LoginScreen()));
+                          Get.to(() => LoginScreen());
                         },
                         child: Text('Login'.toUpperCase()))),
                 SizedBox(width: 30),
@@ -36,8 +38,9 @@ class WelcomeScreen extends StatelessWidget {
                     child: ElevatedButton(
                         onPressed: () {
                           print("Register");
-                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+                          //  Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => RegisterScreen()));
+                          Get.to(() => RegisterScreen());
                         },
                         child: Text('Register'.toUpperCase()))),
               ],

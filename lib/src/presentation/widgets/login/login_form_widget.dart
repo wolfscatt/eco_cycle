@@ -1,5 +1,8 @@
+import 'package:eco_cycle/src/domain/repositories/login_controller.dart';
+import 'package:eco_cycle/src/domain/repositories/register_controller.dart';
 import 'package:eco_cycle/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../forget_password/forget_password_model_bottom.dart';
 
 class LoginForm extends StatefulWidget {
@@ -12,49 +15,44 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController mailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  bool obsecureText = true;
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    var email = mailController.text;
-    var password = passwordController.text;
+    final controller = Get.put(LoginController());
     return Form(
+      key: controller.loginFormKey,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
-              controller: mailController,
+              controller: controller.email,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person_outline_outlined),
                 labelText: "E-Mail",
                 hintText: "Enter E-Mail Address",
               ),
-              onChanged: (value) {
-                setState(() {
-                  mailController.text = value;
-                });
-              },
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: passwordController,
-              decoration: const InputDecoration(
+              obscureText: obsecureText,
+              controller: controller.password,
+              decoration: InputDecoration(
                 prefixIcon: Icon(Icons.fingerprint),
                 labelText: "Password",
                 hintText: "Enter Password",
                 suffixIcon: IconButton(
-                  onPressed: null,
                   icon: Icon(Icons.remove_red_eye_sharp),
+                  onPressed: () {
+                    setState(() {
+                      obsecureText = !obsecureText;
+                    });
+                  },
                 ),
               ),
-              onChanged: (value) {
-                setState(() {
-                  passwordController.text = value;
-                });
-              },
             ),
 
             const SizedBox(height: 10),
@@ -74,10 +72,10 @@ class _LoginFormState extends State<LoginForm> {
               child: ElevatedButton(
                 onPressed: () {
                   print("Login HomePage");
-                  print("Email: $email\nPassword: $password");
-                  //if (email == "omer@gmail.com" && password == "12345") {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                  if (controller.loginFormKey.currentState!.validate()) {
+                    LoginController.to
+                        .login(controller.email.text, controller.password.text);
+                  }
                 },
                 child: Text("Login".toUpperCase()),
               ),
