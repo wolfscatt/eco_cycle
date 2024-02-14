@@ -71,7 +71,7 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   print("Login HomePage");
                   if (controller.loginFormKey.currentState!.validate()) {
-                    controller.login(controller.email.text, controller.password.text);
+                    controller.login(controller.email.text.trim(), controller.password.text.trim());
                   }
                 },
                 child: Text("Login".toUpperCase()),

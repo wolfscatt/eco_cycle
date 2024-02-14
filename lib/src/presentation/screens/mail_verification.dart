@@ -43,7 +43,9 @@ class MailVerification extends StatelessWidget {
                       controller.sendVerificationMail();
                     }, child: Text("Resend Verification Link")),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.manuallyCheckEmailVerificationStatus();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

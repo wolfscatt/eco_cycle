@@ -77,10 +77,8 @@ class _RegisterFormState extends State<RegisterForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-
                     // ----------- Create User -----------
                     createUserAndSignUp(controller);
-
                   }
                 },
                 child: Text("Sign Up".toUpperCase()),
@@ -97,7 +95,7 @@ void createUserAndSignUp(RegisterController controller) {
   final user = UserModel(
       fullName: controller.fullName.text.trim(),
       email: controller.email.text.trim(),
-      phoneNumber: controller.phoneNumber.text.trim(),
+      phoneNumber: '+90${controller.phoneNumber.text.trim()}',      // düzenlenebilir.
       password: controller.password.text.trim());
   controller.createUser(user);
 }

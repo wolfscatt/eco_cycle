@@ -35,8 +35,9 @@ class ProfileController extends GetxController{
   deleteUser(String id) async {
     await _userRepo.deleteUser(id);
     await _authRepo.deleteUser();
+    final user = _authRepo.firebaseUser.value;
     Helper.errorSnackBar(
-        title: "User Deleted", message: "User Deleted Successfully");
+        title: "${user?.displayName ?? "User"} Deleted", message: "User Deleted Successfully");
   }
 
   updateUser(UserModel user, String? id) async {

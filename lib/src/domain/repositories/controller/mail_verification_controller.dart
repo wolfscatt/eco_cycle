@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:eco_cycle/src/domain/repositories/auth_repository.dart';
+import 'package:eco_cycle/src/domain/usecases/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class MailVerificationController extends GetxController {
   late Timer _timer;
+
+  final _authRepo = Get.put(AuthenticationRepository());
 
   @override
   void onInit() {
@@ -16,21 +19,21 @@ class MailVerificationController extends GetxController {
 
   Future<void> sendVerificationMail() async {
     try {
-      await AuthenticationRepository.to.sendEmailVerification();
+      await _authRepo.sendEmailVerification();
     } catch (e) {
-      Get.snackbar(
-          "Error", "Failed to send verification mail: ${e.toString()}");
+      Helper.errorSnackBar(
+          title: "Verification Mail Sending Failed", message: e.toString());
       print(e);
     }
   }
 
   void setTimerForAutoRedirect() {
-    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 60), (timer) {
       FirebaseAuth.instance.currentUser?.reload();
       final user = FirebaseAuth.instance.currentUser;
       if (user!.emailVerified) {
         _timer.cancel();
-        AuthenticationRepository.to.setInitialScreen(user);
+        _authRepo.setInitialScreen(user);
       }
     });
   }
@@ -40,7 +43,9 @@ class MailVerificationController extends GetxController {
     final user = FirebaseAuth.instance.currentUser;
     if (user!.emailVerified) {
       _timer.cancel();
-      AuthenticationRepository.to.setInitialScreen(user);
+      _authRepo.setInitialScreen(user);
     }
   }
+
+ 
 }
