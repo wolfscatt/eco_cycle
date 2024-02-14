@@ -1,8 +1,6 @@
-import 'package:eco_cycle/src/domain/repositories/login_controller.dart';
-import 'package:eco_cycle/src/domain/repositories/register_controller.dart';
-import 'package:eco_cycle/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../domain/repositories/controller/login_controller.dart';
 import '../forget_password/forget_password_model_bottom.dart';
 
 class LoginForm extends StatefulWidget {
@@ -73,8 +71,7 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () {
                   print("Login HomePage");
                   if (controller.loginFormKey.currentState!.validate()) {
-                    LoginController.to
-                        .login(controller.email.text, controller.password.text);
+                    controller.login(controller.email.text, controller.password.text);
                   }
                 },
                 child: Text("Login".toUpperCase()),

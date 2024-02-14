@@ -1,7 +1,8 @@
-import 'package:eco_cycle/src/domain/repositories/otp_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:get/get.dart';
+
+import '../../domain/repositories/controller/otp_controller.dart';
 
 class OtpScreen extends StatelessWidget {
   const OtpScreen({super.key});
@@ -48,7 +49,7 @@ class OtpScreen extends StatelessWidget {
                 filled: true,
                 onSubmit: (code) {
                   otp = code;
-                  OTPController.to.verifyOTP(otp);
+                  otpController.verifyOTP(otp);
                 },
               ),
               SizedBox(
@@ -56,7 +57,7 @@ class OtpScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  OTPController.to.verifyOTP(otp);
+                  otpController.verifyOTP(otp);
                 },
                 child: Text("Send"),
               ),

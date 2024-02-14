@@ -2,7 +2,7 @@ import 'package:eco_cycle/src/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../domain/repositories/register_controller.dart';
+import '../../../domain/repositories/controller/register_controller.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -99,5 +99,5 @@ void createUserAndSignUp(RegisterController controller) {
       email: controller.email.text.trim(),
       phoneNumber: controller.phoneNumber.text.trim(),
       password: controller.password.text.trim());
-  RegisterController.to.createUser(user);
+  controller.createUser(user);
 }

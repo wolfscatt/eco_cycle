@@ -1,8 +1,9 @@
 import 'package:eco_cycle/src/domain/repositories/auth_repository.dart';
-import 'package:eco_cycle/src/domain/repositories/mail_verification_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+
+import '../../domain/repositories/controller/mail_verification_controller.dart';
 
 class MailVerification extends StatelessWidget {
   const MailVerification({super.key});

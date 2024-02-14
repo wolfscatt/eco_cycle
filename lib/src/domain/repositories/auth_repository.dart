@@ -113,6 +113,23 @@ class AuthenticationRepository extends GetxController {
     return null;
   }
 
+  // -------------------- Delete User --------------------
+  Future<void> deleteUser() async {
+    try {
+      await auth.currentUser?.delete();
+      auth.authStateChanges().listen((User? user) {
+        if (user == null) {
+          Get.offAll(() => WelcomeScreen());
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+      throw e;
+    } catch (_) {
+      print("An error occurred while trying to delete user");
+    }
+  }
+
   // -------------------- Sign In With Google --------------------
   Future<UserCredential?> signInWithGoogle() async {
     try {

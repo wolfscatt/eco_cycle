@@ -2,7 +2,7 @@ import 'package:eco_cycle/src/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'auth_repository.dart';
+import '../auth_repository.dart';
 
 class OTPController extends GetxController {
   static OTPController get to => Get.find();

@@ -1,5 +1,6 @@
 import 'package:eco_cycle/src/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../widgets/bottom_nav_bar.dart';
 import 'profile_page.dart';
@@ -43,8 +44,7 @@ class HomePage extends StatelessWidget {
             child: IconButton(
                 onPressed: () {
                   print("Profile Page");
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ProfilePage()));
+                  Get.to(() => ProfilePage());
                 },
                 icon: Icon(Icons.person_4_outlined)),
           )

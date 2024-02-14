@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../domain/entities/user.dart';
-import '../../domain/repositories/profile_controller.dart';
+import '../../domain/repositories/controller/profile_controller.dart';
 import '../../utils/constants.dart';
+import '../pages/profile_page.dart';
 import '../widgets/edit_text_input_widget.dart';
 
 class UpdateProfile extends StatelessWidget {
@@ -24,7 +25,7 @@ class UpdateProfile extends StatelessWidget {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Get.back();
+          Get.off(() => ProfilePage());
         },
         icon: Icon(LineAwesomeIcons.angle_left),
       ),
@@ -60,9 +61,9 @@ class UpdateProfileBody extends StatelessWidget {
                   final id = user.id;
                   final email = TextEditingController(text: user.email);
                   final fullName = TextEditingController(text: user.fullName);
-                  final phoneNumber =
-                      TextEditingController(text: user.phoneNumber);
+                  final phoneNumber = TextEditingController(text: user.phoneNumber);
                   final password = TextEditingController(text: user.password);
+                  final photoUrl = user.photoURL;
                   return Column(
                     children: [
                       Stack(children: [
@@ -71,7 +72,8 @@ class UpdateProfileBody extends StatelessWidget {
                             child: SizedBox(
                               width: 150,
                               height: 150,
-                              child: Image(image: AssetImage(defaultUserImage)),
+                              child: Image(
+                                  image: getImage(user), fit: BoxFit.cover),
                             )),
                         Positioned(
                           bottom: 0,
@@ -133,7 +135,8 @@ class UpdateProfileBody extends StatelessWidget {
                                     fullName: fullName.text.trim(),
                                     email: email.text.trim(),
                                     phoneNumber: phoneNumber.text.trim(),
-                                    password: password.text.trim());
+                                    password: password.text.trim(),
+                                    photoURL: photoUrl);
 
                                 await controller.updateUser(userData, id);
                               },
@@ -155,6 +158,14 @@ class UpdateProfileBody extends StatelessWidget {
             },
           ),
         ));
+  }
+
+  getImage(UserModel userData) {
+    if (userData.photoURL != null) {
+      return NetworkImage(userData.photoURL!);
+    } else {
+      return AssetImage(defaultUserImage);
+    }
   }
 }
 

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../domain/repositories/login_controller.dart';
+import '../../../domain/repositories/controller/login_controller.dart';
 import '../../../utils/constants.dart';
 import '../../screens/register_screen.dart';
 

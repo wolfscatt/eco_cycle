@@ -13,6 +13,16 @@ class RegisterWithEmailAndPasswordFailure implements Exception {
         return const RegisterWithEmailAndPasswordFailure("Operation not allowed");
       case "weak-password":
         return const RegisterWithEmailAndPasswordFailure("Weak password");
+      case "too-many-requests":
+        return const RegisterWithEmailAndPasswordFailure("Too many requests");
+      case "user-disabled":
+        return const RegisterWithEmailAndPasswordFailure("User disabled");
+      case "user-not-found":
+        return const RegisterWithEmailAndPasswordFailure("User not found");
+      case "wrong-password":
+        return const RegisterWithEmailAndPasswordFailure("Wrong password");
+      case "user-already-exists":
+        return const RegisterWithEmailAndPasswordFailure("User already exists");
       default:
         return const RegisterWithEmailAndPasswordFailure();
     }

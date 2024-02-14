@@ -1,11 +1,11 @@
+import 'package:eco_cycle/src/presentation/pages/home_page.dart';
 import 'package:eco_cycle/src/presentation/screens/update_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../domain/entities/user.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/repositories/profile_controller.dart';
+import '../../domain/repositories/controller/profile_controller.dart';
 import '../../utils/constants.dart';
 import '../screens/info_screen.dart';
 import '../widgets/profile_menu_widget.dart';
@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Get.back();
+          Get.off(() => HomePage());
         },
         icon: Icon(LineAwesomeIcons.angle_left),
       ),
@@ -60,6 +60,7 @@ class ProfilePageBody extends StatelessWidget {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
                     UserModel userData = snapshot.data as UserModel;
+                    final id = userData.id;
                     return Column(
                       children: [
                         Stack(children: [
@@ -69,7 +70,7 @@ class ProfilePageBody extends StatelessWidget {
                                 width: 120,
                                 height: 120,
                                 child:
-                                    Image(image: AssetImage(defaultUserImage)),
+                                    Image(image: getImage(userData), fit: BoxFit.cover),
                               )),
                           Positioned(
                             bottom: 0,
@@ -119,7 +120,7 @@ class ProfilePageBody extends StatelessWidget {
                             icon: LineAwesomeIcons.alternate_sign_out,
                             textColor: Colors.red,
                             onPress: () {
-                              controller.signOut();
+                              controller.signOut(userData);
                             }),
                         SizedBox(height: 10),
                         ProfileMenuWidget(
@@ -127,7 +128,9 @@ class ProfilePageBody extends StatelessWidget {
                             textColor: Colors.red,
                             icon: LineAwesomeIcons.trash,
                             onPress: () {
-                              //controller.deleteAccount();
+                              if(id != null) {
+                                controller.deleteUser(id);
+                              }
                             }),
                       ],
                     );
@@ -138,7 +141,7 @@ class ProfilePageBody extends StatelessWidget {
                         Text("Error: ${snapshot.error}"),
                         ElevatedButton(
                             onPressed: () {
-                              controller.signOut();
+                              controller.signOut(snapshot.data as UserModel);
                             },
                             child: Text("Sign Out"))
                       ],
@@ -150,7 +153,7 @@ class ProfilePageBody extends StatelessWidget {
                         Text("Error"),
                         ElevatedButton(
                             onPressed: () {
-                              controller.signOut();
+                              controller.signOut(snapshot.data as UserModel);
                             },
                             child: Text("Sign Out"))
                       ],
@@ -161,5 +164,14 @@ class ProfilePageBody extends StatelessWidget {
                 }
               }),
         ));
+  }
+  
+  getImage(UserModel userData) {
+    if (userData.photoURL != null) {
+      return NetworkImage(userData.photoURL!);
+    } else {
+      return AssetImage(defaultUserImage);
+    }
+
   }
 }

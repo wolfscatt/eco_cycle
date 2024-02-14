@@ -1,12 +1,13 @@
 import 'package:eco_cycle/src/domain/repositories/auth_repository.dart';
 import 'package:eco_cycle/src/domain/repositories/user_repository/user_repository.dart';
+import 'package:eco_cycle/src/domain/usecases/helper.dart';
 import 'package:eco_cycle/src/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../entities/user.dart';
+import '../../entities/user.dart';
 
-class ProfileController extends GetxController {
+class ProfileController extends GetxController{
   static ProfileController get to => Get.find();
 
   final RxBool obsecureText = true.obs;
@@ -23,28 +24,30 @@ class ProfileController extends GetxController {
     }
   }
 
-  signOut(){
+  signOut(UserModel? user) async {
     _authRepo.signOut();
+    if(user != null) {
+      Helper.warningSnackBar(
+        title: "${user.fullName} Sign Out", message: "User Sign Out Successfully");
+    }
   }
 
-  deleteUser(UserModel user) async {
-    await _userRepo.deleteUser(user);
-    Get.snackbar("Success", "Account deleted successfully");
+  deleteUser(String id) async {
+    await _userRepo.deleteUser(id);
+    await _authRepo.deleteUser();
+    Helper.errorSnackBar(
+        title: "User Deleted", message: "User Deleted Successfully");
   }
 
   updateUser(UserModel user, String? id) async {
     try {
       await _userRepo.updateUser(user, id);
-      Get.snackbar('Success', 'User Updated Successfully',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green.withOpacity(0.1),
-          colorText: Colors.green);
-      Get.off(ProfilePage());
+      Helper.successSnackBar(
+          title: "Success", message: "User Updated Successfully");
+      Get.offAll(ProfilePage());
     } catch (error) {
-      Get.snackbar('Error', 'Something went wrong, please try again',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.redAccent.withOpacity(0.1),
-          colorText: Colors.red);
+      Helper.errorSnackBar(
+          title: "Error", message: "Something went wrong, please try again");
       print(error.toString());
     }
   }

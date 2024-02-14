@@ -1,7 +1,7 @@
-import 'package:eco_cycle/src/domain/repositories/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/repositories/controller/register_controller.dart';
 import '../../../utils/constants.dart';
 import '../../screens/login_screen.dart';
 
