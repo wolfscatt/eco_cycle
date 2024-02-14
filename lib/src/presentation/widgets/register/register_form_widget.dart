@@ -1,6 +1,4 @@
 import 'package:eco_cycle/src/domain/entities/user.dart';
-import 'package:eco_cycle/src/domain/repositories/auth_repository.dart';
-import 'package:eco_cycle/src/presentation/screens/otp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -79,13 +77,6 @@ class _RegisterFormState extends State<RegisterForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    // ----------- Authentication -----------
-                    // RegisterController.to.registerUser(
-                    //   controller.email.text,
-                    //   controller.password.text
-                    // );
-                    // RegisterController.to
-                    //     .phoneAuth(controller.phoneNumber.text);
 
                     // ----------- Create User -----------
                     createUserAndSignUp(controller);

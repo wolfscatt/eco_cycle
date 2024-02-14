@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../domain/repositories/login_controller.dart';
 import '../../../utils/constants.dart';
 import '../../screens/register_screen.dart';
 
@@ -12,6 +13,7 @@ class LoginFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -21,7 +23,9 @@ class LoginFooterWidget extends StatelessWidget {
           width: double.infinity,
           child: OutlinedButton.icon(
             icon: const Image(image: AssetImage(googleLogo), width: 20.0),
-            onPressed: () {},
+            onPressed: () {
+              controller.googleSignIn();
+            },
             label: const Text("Sign In With Google"),
           ),
         ),

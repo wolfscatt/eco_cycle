@@ -1,24 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel implements BaseUser {
   final String? id;
   final String fullName;
   final String email;
-  final String phoneNumber;
-  final String password;
+  final String? phoneNumber;
+  final String? password;
+  final String? photoURL;
 
-  UserModel(
+  UserModel( 
       {this.id,
       required this.fullName,
       required this.email,
-      required this.phoneNumber,
-      required this.password});
+      this.phoneNumber,
+      this.password,
+      this.photoURL,});
 
 // JSON'dan User nesnesine dönüştürme metodu
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
     return UserModel(
-      fullName: json['fullName'],
-      email: json['email'],
-      phoneNumber: json['phoneNumber'],
-      password: json['password'],
+      id: document.id,
+      fullName: data['fullName'],
+      email: data['email'],
+      phoneNumber: data['phoneNumber'],
+      password: data['password'],
+      photoURL: data['photoURL'],
     );
   }
 
@@ -29,6 +36,7 @@ class UserModel implements BaseUser {
       'email': email,
       'phoneNumber': phoneNumber,
       'password': password,
+      'photoURL': photoURL,
     };
   }
 }

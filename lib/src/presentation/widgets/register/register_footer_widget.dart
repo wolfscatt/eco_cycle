@@ -1,3 +1,4 @@
+import 'package:eco_cycle/src/domain/repositories/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,13 +12,16 @@ class RegisterFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RegisterController());
     return Column(
       children: [
         const Text("OR"),
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              controller.googleSignIn();
+            },
             icon: const Image(
               image: AssetImage(googleLogo),
               width: 20.0,

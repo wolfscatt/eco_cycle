@@ -4,12 +4,17 @@ import 'package:eco_cycle/src/presentation/screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_cycle/src/utils/theme/theme.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+
+  // Await splash until other items load
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-  .then((value) => Get.put(AuthenticationRepository()));
+      .then((value) => Get.put(AuthenticationRepository()));
   runApp(App());
 }
 

@@ -6,3 +6,6 @@ const String defaultUserImage = 'assets/images/default-user.jpg';
 // ** --------- Text ---------**
 const String welcomeText = 'Welcome to Eco Cycle';
 const String appName = "Eco Cycle";
+
+// ** --------- Colors ---------**
+const String backgColor = "#00202b";

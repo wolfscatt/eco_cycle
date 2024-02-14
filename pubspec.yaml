@@ -23,6 +23,7 @@ dependencies:
   get: ^4.6.6
   line_awesome_flutter: ^2.0.0
   cloud_firestore: ^4.15.4
+  google_sign_in: ^6.2.1
 
 dev_dependencies:
   flutter_test:
