@@ -1,20 +1,32 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:eco_cycle/src/domain/repositories/controller/home_controller.dart';
 import 'package:eco_cycle/src/domain/usecases/helper.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../presentation/pages/home_page.dart';
 import '../../entities/category_enum.dart';
+import '../../entities/photograf.dart';
+import '../auth_repository.dart';
+import '../photo_repository.dart';
 
 class AddPhotoController extends GetxController {
+  static AddPhotoController get to => Get.find();
 
   final ImagePicker _imagePicker = ImagePicker();
   final Rx<File?> selectedImage = Rx<File?>(null);
   final Rx<Category> selectedCategory = Category.plantTrees.obs;
 
   final TextEditingController descriptionController = TextEditingController();
+  final _authRepo = Get.put(AuthenticationRepository());
+  final _photoRepo = Get.put(PhotoRepository());
+
+  final _storage = FirebaseStorage.instance;
 
   Future<bool> _requestPermission(Permission permission) async {
     if (await permission.isGranted) {
@@ -43,8 +55,7 @@ class AddPhotoController extends GetxController {
           await _imagePicker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         selectedImage.value = File(pickedFile.path);
-      // Burada pickedFile değişkeniyle seçilen fotoğrafın işlemlerini yapabilirsiniz
-
+        // Burada pickedFile değişkeniyle seçilen fotoğrafın işlemlerini yapabilirsiniz
       } else {
         Helper.errorSnackBar(
             title: "Error", message: "Failed to pick an image");
@@ -73,7 +84,6 @@ class AddPhotoController extends GetxController {
     }
   }
 
-
   Widget descriptionWidget() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -92,7 +102,7 @@ class AddPhotoController extends GetxController {
 
   Widget dropDownButtonWidget() {
     return Obx(() {
-    print(selectedCategory.value.toString().split(".").last);
+      print(selectedCategory.value.toString().split(".").last);
       return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(
@@ -218,8 +228,57 @@ class AddPhotoController extends GetxController {
     );
   }
 
-  void saveImageData() {
-    // mevcut kullanıcının dosyaları altına photograf modelini kullanan verileri kaydedeceğiz. ve kayıt sonunda başarılı ya da başarısz olma durumuna göre snackbar göstereceğiz. Home Page'de ise kullanıcı kendi kaydettiğini resimleri, açıklamalarını ve puanını bir kart içerisinde yan yana 2 resim sığacak şekilde görebilecek. Card'a tıkladığında resmin detaylarının olduğu bir sayfa açılacak ve orada isterse resmi silebilecek. Storage'da her kullanıcı için Users/userName/pictures klasörü altına resimler kayıt edilecek.
+  Future<void> saveImageData() async {
+    if (selectedImage.value == null) {
+      // Hata durumunda uyarı gösterilebilir
+      return;
+    }
 
+    try {
+      // Firebase Storage'a resim yükleme işlemi
+      final userName = _authRepo.auth.currentUser;
+      final fileName = selectedImage.value!.path.split('/').last;
+      final Reference ref = _storage
+          .ref()
+          .child('Users/${userName?.displayName}/pictures/$fileName');
+      await ref.putFile(selectedImage.value!);
+      final imageUrl = await ref.getDownloadURL();
+
+      // Cloud Firestore'a kaydetme
+      final addedPhotoData = AddedPhotoData(
+        id: userName!.uid,
+        imageUri: imageUrl,
+        category: selectedCategory.value,
+        description: descriptionController.text,
+        name: userName.displayName,
+        imageId: fileName,
+      );
+      final result = await _photoRepo.uploadImageCloud(addedPhotoData);
+      if (result == null) {
+        Helper.successSnackBar(
+            title: "Success", message: "Image uploaded successfully");
+
+        Get.find<HomeController>().setPoint();
+      }
+
+      // Resim başarıyla yüklendi, burada imageUrl'i kullanabilirsiniz
+    } catch (e) {
+      // Hata durumunda uyarı gösterilebilir
+      Helper.errorSnackBar(title: "Error", message: "Failed to upload image");
+    }
+  }
+
+  Future<String?> deletePhoto(String imageid) async {
+    if (imageid.isNotEmpty) {
+      final ref = _storage.ref().child(
+          'Users/${_authRepo.auth.currentUser?.displayName}/pictures/$imageid');
+      await ref.delete();
+      final result = await _photoRepo.deleteImageFromCloud(imageid);
+      if (result != null) {
+        return "Failed to delete photo";
+      }
+    }else{
+      return "Image id is empty";
+    }
   }
 }

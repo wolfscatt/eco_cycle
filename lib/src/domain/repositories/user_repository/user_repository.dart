@@ -1,15 +1,10 @@
-import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eco_cycle/src/domain/entities/user.dart';
-import 'package:eco_cycle/src/domain/repositories/auth_repository.dart';
 import 'package:eco_cycle/src/domain/repositories/exceptions/register_email_password_failure.dart';
 import 'package:eco_cycle/src/domain/usecases/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'base_user_repository.dart';
 
@@ -109,15 +104,4 @@ class UserRepository extends GetxController implements BaseUserRepository {
     
   }
 
-  Future<String> uploadImage(String path, XFile image) async {
-    try {
-      final ref = FirebaseStorage.instance.ref(path).child(image.name);
-      await ref.putFile(File(image.path));
-      final url = await ref.getDownloadURL();
-      return url;
-    } catch (error) {
-      final err = RegisterWithEmailAndPasswordFailure.code(error.toString());
-      return err.message;
-    }
-  }
 }

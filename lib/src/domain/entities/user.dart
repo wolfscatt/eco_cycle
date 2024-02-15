@@ -10,7 +10,6 @@ class UserModel implements BaseUser {
   final String? password;
   final String? photoURL;
   final int? points;
-  final AddedPhotoData? addedPhotoData;
 
   UserModel( 
       {this.id,
@@ -20,7 +19,6 @@ class UserModel implements BaseUser {
       this.password,
       this.photoURL,
       this.points,
-      this.addedPhotoData
       });
 
 // JSON'dan User nesnesine dönüştürme metodu
@@ -34,13 +32,7 @@ class UserModel implements BaseUser {
       password: data['password'],
       photoURL: data['photoURL'],
       points: data['points'],
-      addedPhotoData: AddedPhotoData(
-        id: data['addedPhotoData']['id'],
-        name: data['addedPhotoData']['name'],
-        imageUri: data['addedPhotoData']['imageUri'],
-        category: data['addedPhotoData']['category'],
-        description: data['addedPhotoData']['description'],
-      ),
+      
     );
   }
 
@@ -53,13 +45,7 @@ class UserModel implements BaseUser {
       'password': password,
       'photoURL': photoURL,
       'points': points,
-      'addedPhotoData': {
-        'id': addedPhotoData?.id,
-        'name': addedPhotoData?.name,
-        'imageUri': addedPhotoData?.imageUri,
-        'category': addedPhotoData?.category,
-        'description': addedPhotoData?.description,
-      },
+      
     };
   }
 }

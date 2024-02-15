@@ -2,6 +2,7 @@ import 'package:eco_cycle/src/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../domain/entities/photograf.dart';
 import '../../domain/repositories/controller/home_controller.dart';
 import '../widgets/bottom_nav_bar.dart';
 
@@ -14,7 +15,6 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         controller: controller,
-        leading: HomeLeadingWidget(),
       ),
       body: Obx(() => controller.getBodyWidget()),
       bottomNavigationBar: CustomBottomNavBar(
@@ -31,50 +31,141 @@ class HomePageBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemCount: 2,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: EdgeInsets.all(10),
-              child: Container(
-                color: Colors.grey[300],
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Image.network(
-                      "https://cdn.pixabay.com/photo/2023/09/25/12/41/desert-8274886_1280.jpg",
-                      fit: BoxFit.cover,
+    final controller = Get.put(HomeController());
+    return FutureBuilder<List<AddedPhotoData>>(
+        future: controller.fetchPhotos(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            final photos = snapshot.data;
+            if (photos == null || photos.isEmpty) {
+              return Center(child: Text('No photos found.'));
+            }
+            return GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+              itemCount: photos.length,
+              itemBuilder: (context, index) {
+                final photo = photos[index];
+                return GestureDetector(
+                  onTap: () => _showPhotoDialog(context, photo),
+                  child: Card(
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(10),
+                            ),
+                            child: Image.network(
+                              photo.imageUri,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Category: ${photo.category.toString().split('.').last}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Description: ${photo.description ?? ''}',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => _showDeleteConfirmationDialog(
+                              context, photo, controller),
+                          child: Text('Delete'),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
-          },
-      );
+          }
+        },
+    );
   }
-}
 
-class HomeLeadingWidget extends StatelessWidget {
-  const HomeLeadingWidget({
-    super.key,
-  });
+  void _showPhotoDialog(BuildContext context, AddedPhotoData photo) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Image.network(
+              photo.imageUri,
+              fit: BoxFit.cover,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Category: ${photo.category.toString().split('.').last}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    'Description: ${photo.description ?? ''}',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Column(
-        children: [
-          Icon(
-            Icons.stars_rounded,
-            color: Colors.black,
+  void _showDeleteConfirmationDialog(
+      BuildContext context, AddedPhotoData photo, HomeController controller) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Delete Photo'),
+        content: Text('Are you sure you want to delete this photo?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel'),
           ),
-          Text(
-            "500",
-            style: TextStyle(
-                color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold),
-          )
+          ElevatedButton(
+            onPressed: () {
+              controller.deletePhoto(photo.imageId);
+              Navigator.pop(context);
+            },
+            child: Text('Delete'),
+          ),
         ],
       ),
     );

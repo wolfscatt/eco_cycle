@@ -1,4 +1,3 @@
-import 'package:eco_cycle/src/domain/entities/category_enum.dart';
 import 'package:eco_cycle/src/domain/repositories/controller/add_photo_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

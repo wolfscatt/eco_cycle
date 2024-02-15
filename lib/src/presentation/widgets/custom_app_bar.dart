@@ -4,29 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final Widget? leading;
   final HomeController controller;
 
   const CustomAppBar({
-    this.leading,
     Key? key,
     required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Obx(
-        () => Text(
+    return Obx(() => AppBar(
+      title: Text(
           controller.currentTitle,
           style: Theme.of(context)
               .textTheme
               .headlineMedium
               ?.copyWith(color: Colors.black),
         ),
-      ),
       centerTitle: true,
-      leading: leading,
+      leading: Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Column(
+        children: [
+          Icon(
+            Icons.stars_rounded,
+            color: Colors.black,
+          ),
+          Text(
+            controller.currentPoint.toString(),
+            style: TextStyle(
+                color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold),
+          )
+        ],
+      ),
+    ),
       actions: <Widget>[
         Container(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -42,6 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
       // İstediğiniz diğer özellikleri de buraya ekleyebilirsiniz
       // Örneğin: backgroundColor, elevation vb.
+    ) 
     );
   }
 
