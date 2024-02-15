@@ -1,58 +1,38 @@
-import 'package:eco_cycle/src/utils/constants.dart';
+import 'package:eco_cycle/src/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../domain/repositories/controller/home_controller.dart';
 import '../widgets/bottom_nav_bar.dart';
-import 'profile_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomeController());
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              Icon(
-                Icons.stars_rounded,
-                color: Colors.black,
-              ),
-              Text(
-                "500",
-                style: TextStyle(color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        ),
-        title: Text(
-          appName,
-          style: Theme.of(context)
-              .textTheme
-              .headlineMedium
-              ?.copyWith(color: Colors.black),
-        ),
-        centerTitle: true,
-        elevation: 0,
-        actions: <Widget>[
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: Colors.blue),
-            child: IconButton(
-                onPressed: () {
-                  print("Profile Page");
-                  Get.to(() => ProfilePage());
-                },
-                icon: Icon(Icons.person_4_outlined)),
-          )
-        ],
+      appBar: CustomAppBar(
+        controller: controller,
+        leading: HomeLeadingWidget(),
       ),
-      body: GridView.builder(
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      body: Obx(() => controller.getBodyWidget()),
+      bottomNavigationBar: CustomBottomNavBar(
+        controller: controller,
+      ),
+    );
+  }
+}
+
+class HomePageBodyWidget extends StatelessWidget {
+  const HomePageBodyWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemCount: 2,
           itemBuilder: (context, index) {
             return Padding(
@@ -70,19 +50,33 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             );
-          }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print("Add Photo");
-        },
-        child: Icon(Icons.add_a_photo_outlined),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        elevation: 0,
+          },
+      );
+  }
+}
+
+class HomeLeadingWidget extends StatelessWidget {
+  const HomeLeadingWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Column(
+        children: [
+          Icon(
+            Icons.stars_rounded,
+            color: Colors.black,
+          ),
+          Text(
+            "500",
+            style: TextStyle(
+                color: Colors.black, fontSize: 11, fontWeight: FontWeight.bold),
+          )
+        ],
       ),
-      bottomNavigationBar: BottomNavBar(),
     );
   }
 }

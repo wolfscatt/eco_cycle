@@ -1,13 +1,13 @@
 import 'package:eco_cycle/src/domain/entities/category_enum.dart';
 
-class Photograf {
+class AddedPhotoData {
   final String id;
-  final String name;
+  final String? name;
   final String imageUri;
   final Category category;
-  final String description;
+  final String? description;
 
-  Photograf({required this.id, required this.name, required this.imageUri, required this.category, required this.description});
+  AddedPhotoData({required this.id, this.name, required this.imageUri, required this.category, this.description});
 
   
 }
