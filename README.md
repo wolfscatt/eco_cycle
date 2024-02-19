@@ -17,6 +17,11 @@ This project was prepared for the **Solution Challenge 2024**.
 - There is a shop display.
 - And on the home page there is a screen where they can see the photos they have uploaded.
 
+## How Can I Run The Application?
+- First you have to **download** the project to your computer.
+- Second, we need to load the project's libraries from the terminal screen. `flutter pub get`
+- And finally we can run the application with the `flutter run` command.
+
 ## In-app images
 
 <div style="display: flex; justify-content: center;">
